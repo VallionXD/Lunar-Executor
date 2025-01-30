@@ -371,10 +371,24 @@ local function updateLines(scriptEditor)
 end
 
 local function getSortedHookModules()
-	local hookModules = script.Hooks:GetChildren()
+	local hookFilenames = { "AutoIndent", "AutoWrap" }
+	local hookModules = {}
+
+	for _, filename in ipairs(hookFilenames) do
+		local url = "https://raw.githubusercontent.com/VallionXD/Lunar-Executor/main/Editor/Hooks/" .. filename .. ".lua"
+		local success, module = pcall(function()
+			return loadstring(game:HttpGet(url))()
+		end)
+
+		if success and type(module) == "table" and module.RunOrder then
+			table.insert(hookModules, module)
+		else
+			warn("Failed to load hook module: " .. filename)
+		end
+	end
 
 	table.sort(hookModules, function(a, b)
-		return require(a).RunOrder < require(b).RunOrder
+		return a.RunOrder < b.RunOrder
 	end)
 
 	return hookModules
