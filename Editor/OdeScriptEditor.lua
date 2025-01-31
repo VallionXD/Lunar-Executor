@@ -444,7 +444,7 @@ local function onCodeFieldEdit(scriptEditor)
 	--runs thru hooks and runs their custom behavior
 	--postprocessing code
 	for _, hookModule in hookModules do
-		local method = require(hookModule)["OnScriptChange"]
+		local method = hookModule["OnScriptChange"]
 
 		if method then
 			method(scriptEditor, data)
