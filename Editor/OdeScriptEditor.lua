@@ -671,7 +671,7 @@ function OdeScriptEditor.Embed(frame: GuiBase2d)
 	end)
 
 	for _, hookModule in getSortedHookModules() do
-		local method = require(hookModule)["OnScriptEditorInstantiation"]
+		local method = hookModule["OnScriptEditorInstantiation"]
 
 		if method then
 			method(scriptEditor)
